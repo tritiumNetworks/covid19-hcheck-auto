@@ -1,7 +1,7 @@
 const { constant, fetch } = require('../utils')
 
-module.exports = async (name) => {
-  const result = await fetch('/selectGroupList', {
+module.exports = async (url, token) => {
+  const result = await fetch('https://' + url + '/selectGroupList', token, {
     method: 'POST',
     headers: { 'Content-Type': constant.jsonContentType },
     body: '{}'

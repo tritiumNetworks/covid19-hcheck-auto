@@ -20,10 +20,8 @@ const surveyData = {
   rspns15: null
 }
 
-module.exports = async (token) => {
-  fetch.setToken(token)
-
-  await fetch('/registerServey', {
+module.exports = async (url, token) => {
+  await fetch('https://' + url + '/registerServey', token, {
     method: 'POST',
     headers: { 'Content-Type': constant.jsonContentType },
     body: JSON.stringify(surveyData)

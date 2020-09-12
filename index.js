@@ -1,55 +1,83 @@
-const { fetch, logger } = require('./utils')
+const PORT = process.env.port || 8080
+const path = require('path').resolve()
 
-const {
-  school,
-  studentName,
-  birthday
-} = require('./config.json')
-const api = require('./api');
+const http = require('http')
+const knex = require('knex')
+const express = require('express')
+const socketio = require('socket.io')
+const schedule = require('node-schedule')
+const { renderFile: render } = require('ejs')
 
-(async () => {
-  logger.logDisclaimer()
+const { constant } = require(path + '/utils')
+const { getSchoolData, getUserToken, getGroupList, getSurveyToken, sendSurveyData } = require('./api')
 
-  // Step 1. 학교 데이터 가져오기
-  let schoolData = {}
-  try {
-    schoolData = await api.getSchoolData(school)
-    logger.logStep(1, '학교 데이터 가져오기 완료')
-  } catch (e) {
-    return logger.logError(e)
+const app = express()
+const srv = http.createServer(app)
+const socket = socketio(srv)
+
+// --- db
+
+const db = knex({
+  client: 'mysql',
+  connection: {
+    user: 'covidauto',
+    host: 'localhost',
+    database: 'covidauto'
   }
-  const { schoolCode } = schoolData
-  fetch.setRequestUrl(schoolData.requestUrl)
+})
 
-  // Step 2. 학생 인증 후 참여자 목록 조회 토큰 가져오기
-  let userToken = ''
-  try {
-    userToken = await api.getUserToken(schoolCode, studentName, birthday)
-    logger.logStep(2, '학생 인증 완료')
-  } catch (e) {
-    return logger.logError(e)
+// --- ws
+
+socket.on('connection', (session) => {
+  session.on('checkschool', async (args) => {
+    let data
+    try { await getSchoolData({ region: args[0], level: args[1], name: args[2] }) } catch (err) { data = err.message }
+    session.emit('checkschool', data)
+  })
+})
+
+// --- http
+
+app.get('/', async (_, res) => res.send(await render(path + '/page/index.ejs', { constant })))
+
+app.use('/api', express.urlencoded({ extended: true }))
+app.post('/api', async (req, res) => {
+  const { region, level, name, studentName: sname, birth } = req.body
+
+  let data
+  try { data = await getSchoolData({ region, level, name }) } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }
+
+  const { schoolCode: school, requestUrl: url } = data
+  const rendered = { school, url, name: sname, birth }
+
+  try { await db.insert(rendered).into('userdata') } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }
+  res.send('<script>alert("등록 완료! 내일을 기대하세요 :)");window.location.replace("/")</script>')
+
+  schedule.scheduleJob('40 7 * * 1-6', hcheck(rendered))
+})
+
+app.use('/', express.static(path + '/public'))
+app.use((_, res) => res.redirect('/'))
+
+srv.listen(PORT, () => console.log('Server at port:', PORT))
+
+// --- fn
+
+loadhc()
+async function loadhc () {
+  const datas = await db.select('*').from('userdata')
+  datas.forEach((data) => {
+    schedule.scheduleJob('40 7 * * 1-6', hcheck(data))
+  })
+}
+
+function hcheck ({ school, url, name, birth }) {
+  return async () => {
+    const token = await getUserToken(url, school, name, birth)
+    const users = await getGroupList(url, token)
+    const userf = users.find(item => item.name === name)
+    const stokn = await getSurveyToken(url, school, userf, token)
+
+    await sendSurveyData(url, stokn)
   }
-
-  fetch.setToken(userToken)
-
-  // Step 3. 참여자 목록 조회
-  const usersInAccount = await api.getGroupList()
-  logger.logStep(3, '참여자 목록 조회 완료')
-
-  // Step 4. 학생 데이터 가져오기 (갱신 토큰)
-  const user = usersInAccount.find(item => item.name === studentName)
-  if (!user) return logger.logError('알 수 없는 이유로 참여자 목록에서 학생정보를 불러오지 못했어요.')
-  else logger.logStep(4, '참여자 목록에서 학생정보 가져오기 완료')
-
-  // Step 5. 설문 토큰 가져오기 (갱신 토큰 이용)
-  const surveyToken = await api.getSurveyToken(schoolCode, user)
-  logger.logStep(5, '설문 전송에 사용되는 토큰 가져오기 완료')
-
-  // Step 6. 설문 전송
-  await api.sendSurveyData(surveyToken)
-  logger.logStep(6, '설문 데이터 전송 완료')
-
-  // TODO Step 7. 정상적으로 처리되었는지 확인
-
-  logger.logSuccess()
-})()
+}

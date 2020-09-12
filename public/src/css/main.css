@@ -1,0 +1,66 @@
+.background {
+  background-color: #2e3440;
+}
+
+.foreground {
+  background-color: #3b4252; 
+}
+
+.jumbotron {
+  background-image: url('/src/img/secondary_pw_bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.form-outline .form-control:focus ~ .form-notch .form-notch-leading {
+  border-top: .125rem solid #4c566a;
+  border-bottom: .125rem solid #4c566a;
+  border-left: .125rem solid #4c566a;
+}
+
+.form-outline .form-control:focus ~ .form-notch .form-notch-middle {
+  border-bottom: .125rem solid;
+  border-bottom-color: currentcolor;
+  border-color: #4c566a;
+}
+
+.form-outline .form-control:focus ~ .form-notch .form-notch-trailing {
+  border-color: currentcolor currentcolor currentcolor #4c566a;
+  border-top-color: currentcolor;
+  border-right-color: currentcolor;
+  border-bottom-color: currentcolor;
+  border-bottom: .125rem solid #4c566a;
+  border-right: .125rem solid #4c566a;
+  border-top: .125rem solid #4c566a;
+}
+
+.form-outline .form-control.disabled, .form-outline .form-control:disabled, .form-outline .form-control[readonly] {
+  background-color: #4c566a;
+}
+
+.form-select {
+  background-color: #ffffff00;
+  height: 36.1667px;
+  padding-top: 5.28px;
+}
+
+.form-select:focus {
+  border: .125rem solid #4c566a;
+  transition: border .2s linear;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0 rgba(18,102,241,.25);
+  box-shadow: 0 0 0 0 rgba(18,102,241,.25);
+}
+
+.btn-nord {
+  background-color: #4c566a;
+}
+
+.text-little-white {
+  color: white;
+}
+
+.notify {
+  color: #bf616a;
+}

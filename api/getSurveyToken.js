@@ -1,8 +1,7 @@
 const { constant, fetch } = require('../utils')
 
-module.exports = async (schoolCode, user) => {
-  fetch.setToken(user.token)
-  const surveyToken = await fetch('/userrefresh', {
+module.exports = async (url, schoolCode, user, token) => {
+  const surveyToken = await fetch('https://' + url + '/userrefresh', token, {
     method: 'POST',
     headers: { 'Content-Type': constant.jsonContentType },
     body: JSON.stringify({

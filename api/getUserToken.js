@@ -1,15 +1,13 @@
-const { URLSearchParams } = require('url')
-
 const { constant, fetch, encrypt } = require('../utils')
 
-module.exports = async (schoolCode, name, birthday) => {
+module.exports = async (url, schoolCode, name, birthday) => {
   const reqBody = {
     orgcode: schoolCode,
     name: encrypt(name),
     birthday: encrypt(birthday)
   }
 
-  const result = await fetch('/loginwithschool', {
+  const result = await fetch('https://' + url + '/loginwithschool', '', {
     method: 'POST',
     headers: { 'Content-Type': constant.jsonContentType },
     body: JSON.stringify(reqBody)

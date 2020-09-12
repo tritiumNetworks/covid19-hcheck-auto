@@ -1,11 +1,8 @@
 const fetch = require('node-fetch')
 
-const { baseUrl, fakeUserAgent } = require('./constant')
+const { fakeUserAgent } = require('./constant')
 
-let requestUrl = baseUrl
-let token = ''
-
-function _fetch (addr, options) {
+function _fetch (addr, token, options) {
   if (!options) options = {}
   if (!options.headers) options.headers = {}
 
@@ -13,10 +10,7 @@ function _fetch (addr, options) {
   options.headers['User-Agent'] = fakeUserAgent
   options.headers['X-Requested-With'] = 'XMLHttpRequest'
 
-  return fetch(requestUrl + addr, options)
+  return fetch(addr, options)
 }
-
-_fetch.setToken = (tk) => { token = tk }
-_fetch.setRequestUrl = (url) => { reuqestUrl = url }
 
 module.exports = _fetch

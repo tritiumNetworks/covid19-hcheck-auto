@@ -8,7 +8,7 @@
     <title>ez 자동 자가진단</title>
   </head>
   <body class="w-100 h-100 background">
-    <div class="container foreground w-100 h-100 shadow p-0">
+    <div class="container foreground w-100 shadow p-0">
       <div class="text-center jumbotron p-5 text-white shadow">
         <h1>E-Z 자동 자가진단</h1>
         <h5>한번 등록으로 매일 자동 자가진단</h5>
@@ -58,13 +58,54 @@
         </form>
         <p class="notify"></p>
         <p class="text-white">*등록된 개인정보는 안전하게 보관되며, 매일 7시 40분에 자가진단을 해드립니다</p>
-        <div class="alert alert-danger" role="alert">
-          <ul>
+        <div class="alert alert-danger hover-shadow" role="alert">
+          <ul class="m-0">
             <li>이 서비스는 건강상의 문제를 고려하지 않고 귀찮은 자가진단을 자동으로 할 수 있게 하는 목적으로 개발되었습니다.</li>
             <li>등록 전 반드시 이 서비스를 등록함으로서 자신과 사회에 어떠한 피해가 올것인지 다시 한번 생각해보시기 바랍니다.</li>
             <li>만약 이 서비스를 등록하고 나서 건강상의 문제가 있다면 즉시 담당자에게 연락하시기 바랍니다.</li>
             <li>이 서비스를 등록함으로서 발생하는 피해는 서비스를 등록한 본인에게 책임이 있습니다.</li>
           </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2 text-center text-white">
+      <button type="button" class=" btn btn-nord btn-sm text-white mr-1" data-toggle="modal" data-target="#credit">
+        Credits
+      </button>
+      Hosted with <span style="color: #e25555;">&hearts;</span> by <a class="hover-shadow" href="https://trinets.xyz" style="color: #6bedd4">Tritium Networks</a>.
+    </div>
+
+    <div
+      class="modal fade"
+      id="credit"
+      tabindex="-1"
+      aria-labelledby="creditLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-white bg-dark">
+            <h5 class="modal-title" id="creditLabel">만든이들 & 도움준 사람들</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body bg-dark text-white text-center">
+            백엔드 및 UI디자인 (2차)<br />
+            PMH, Park Min Hyeok (<a href="https://github.com/pmh-only" class="fg-nord">Github</a>/<a href="mailto:pmhstudio.pmh@gmail.com" class="fg-nord">Email</a>)<br /><br />
+
+            API 및 통신 분석 (원작자)<br />
+            comjun04<br /><br />
+
+            보조 프로그래밍 및 테스터<br />
+            Noeul<br /><br />
+
+            투덜투덜 및 테스터<br />
+            Teaddy<br /><br />
+
+            and 트리튬섭 멤버들 (<a href="https://discord.gg/VbcGYnv" class="fg-nord">Discord</a>)
+          </div>
         </div>
       </div>
     </div>

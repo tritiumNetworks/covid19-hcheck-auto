@@ -6,6 +6,10 @@
   background-color: #3b4252; 
 }
 
+.fg-nord {
+  color: #5e81ac;
+}
+
 .jumbotron {
   background-image: url('/src/img/secondary_pw_bg.jpg');
   background-position: center;

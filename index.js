@@ -73,11 +73,13 @@ async function loadhc () {
 
 function hcheck ({ school, url, name, birth }) {
   return async () => {
-    const token = await getUserToken(url, school, name, birth)
-    const users = await getGroupList(url, token)
-    const userf = users.find(item => item.name === name)
-    const stokn = await getSurveyToken(url, school, userf, token)
+    try {
+      const token = await getUserToken(url, school, name, birth)
+      const users = await getGroupList(url, token)
+      const userf = users.find(item => item.name === name)
+      const stokn = await getSurveyToken(url, school, userf, token)
 
-    await sendSurveyData(url, stokn)
+      await sendSurveyData(url, stokn)
+    } catch (_) {}
   }
 }

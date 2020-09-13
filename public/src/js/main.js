@@ -23,10 +23,16 @@ document.forms[0].elements[2].addEventListener('input', () => {
   }, 500)
 })
 
-socket.on('checkschool', (err) => {
+socket.on('checkschool', (err, search) => {
   if (!err) {
-    document.getElementsByClassName('notify')[0].innerHTML = ''; document.forms[0].elements[2].style.color = '#a3be8c'
-  } else { document.getElementsByClassName('notify')[0].innerHTML = err; document.forms[0].elements[2].style.color = '#bf616a' }
+    document.getElementsByClassName('notify')[0].innerHTML = '검색 성공: ' + search.schoolName + ' ' + search.schoolAddr
+    document.getElementsByClassName('notify')[0].style.color = '#a3be8c'
+    document.forms[0].elements[2].style.color = '#a3be8c'
+  } else {
+    document.getElementsByClassName('notify')[0].innerHTML = '검색 실패: ' + err
+    document.getElementsByClassName('notify')[0].style.color = '#bf616a'
+    document.forms[0].elements[2].style.color = '#bf616a'
+  }
   document.forms[0].elements[3].disabled = !!err
   document.forms[0].elements[4].disabled = !!err
 })

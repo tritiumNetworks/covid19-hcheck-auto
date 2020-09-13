@@ -30,9 +30,9 @@ const db = knex({
 
 socket.on('connection', (session) => {
   session.on('checkschool', async (args) => {
-    let data
-    try { await getSchoolData({ region: args[0], level: args[1], name: args[2] }) } catch (err) { data = err.message }
-    session.emit('checkschool', data)
+    let data, search
+    try { search = await getSchoolData({ region: args[0], level: args[1], name: args[2] }) } catch (err) { data = err.message }
+    session.emit('checkschool', data, search)
   })
 })
 

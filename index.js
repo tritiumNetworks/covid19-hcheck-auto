@@ -53,7 +53,7 @@ app.post('/api', async (req, res) => {
   try { await db.insert(rendered).into('userdata') } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }
   res.send('<script>alert("등록 완료! 내일을 기대하세요 :)");window.location.replace("/")</script>')
 
-  schedule.scheduleJob('40 7 * * 1-6', hcheck(rendered))
+  schedule.scheduleJob('40 7 * * *', hcheck(rendered))
 })
 
 app.use('/', express.static(path + '/public'))
@@ -67,7 +67,7 @@ loadhc()
 async function loadhc () {
   const datas = await db.select('*').from('userdata')
   datas.forEach((data) => {
-    schedule.scheduleJob('40 7 * * 1-6', hcheck(data))
+    schedule.scheduleJob('40 7 * * *', hcheck(data))
   })
 }
 

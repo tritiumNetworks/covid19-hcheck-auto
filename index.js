@@ -80,7 +80,7 @@ function hcheck ({ school, url, name, birth }) {
         const userf = users.find(item => item.name === name)
         const stokn = await getSurveyToken(url, school, userf, token)
 
-        await sendSurveyData(url, stokn)
+        await sendSurveyData(url, stokn, userf.name)
       } catch (_) {}
     }, Math.floor(Math.random() * 1200000))
   }

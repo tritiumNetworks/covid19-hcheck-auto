@@ -1,7 +1,7 @@
 const { constant, fetch } = require('../utils')
 
 module.exports = async (url, schoolCode, user, token) => {
-  const surveyToken = await fetch('https://' + url + '/userrefresh', token, {
+  const surveyToken = await fetch('https://' + url + '/v2/getUserInfo', token, {
     method: 'POST',
     headers: { 'Content-Type': constant.jsonContentType },
     body: JSON.stringify({
@@ -9,7 +9,7 @@ module.exports = async (url, schoolCode, user, token) => {
       userPNo: user.userNo
     })
   }).then(res => res.json())
-    .then(json => json.UserInfo.token)
+    .then(json => json.token)
 
   return surveyToken
 }

@@ -35,4 +35,5 @@ socket.on('checkschool', (err, search) => {
   }
   document.forms[0].elements[3].disabled = !!err
   document.forms[0].elements[4].disabled = !!err
+  document.forms[0].elements[5].disabled = !!err
 })

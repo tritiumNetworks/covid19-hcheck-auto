@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.css">
+    <link rel="stylesheet" href="/src/css/main.css">
+    <meta name="og:site_name" content="한번 등록으로 매일 자동 자가진단">
+    <meta property="og:title" content="E-Z 자동 자가진단">
+    <meta property="og:description" content="By Tritium Networks">
+    <meta name="theme-color" content="#4C566A">
+    <meta property="og:image" content="https://hcs.trinets.xyz/src/img/secondary_pw_bg.jpg">
+    <meta name="twitter:card" content="summary">
+    <title>ez 자동 자가진단</title>
+  </head>
+  <body class="w-100 h-100 background">
+    <div class="container foreground w-100 shadow p-0">
+      <div class="text-center jumbotron p-5 text-white shadow">
+        <h1>E-Z 자동 자가진단</h1>
+        <h5>한번 등록으로 매일 자동 자가진단</h5>
+      </div>
+
+      <div class="container mt-5 p-5">
+        <form method="POST" action="/api" onsubmit="return check()">
+          <div class="row">
+            <div class="col-md-3">
+              <select name="region" class="form-select mb-4 text-white">
+                <option value="" selected>시/도</option>
+                <% Object.keys(constant.regions).forEach((e) => { %>
+                  <option class="text-dark"><%= e %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <select name="level" class="form-select mb-4 text-white">
+                <option class="text-dark" value="" selected>학교급</option>
+                <% Object.keys(constant.schoolLevels).forEach((e) => { %>
+                  <option class="text-dark"><%= e %></option>
+                <% }) %>
+              </select>
+            </div>
+            <div class="col-md-5">
+              <div class="form-outline mb-4">
+                <input disabled type="text" name="name" id="name" class="form-control text-little-white" />
+                <label class="form-label text-white" for="name">학교명</label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <div class="form-outline mb-4">
+                <input disabled type="text" name="studentName" id="studentName" class="form-control text-white" />
+                <label class="form-label text-white" for="studentName">학생명</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-outline mb-4">
+                <input disabled type="number" min=10101 name="birth" id="birth" class="form-control text-white" />
+                <label class="form-label text-white" for="birth">생년월일 (6자)</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-outline mb-4">
+                <input disabled type="tel" name="password" id="password" class="form-control text-white" />
+                <label class="form-label text-white" for="password">비밀번호 (4자)</label>
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-nord text-white mb-4 mr-2" type="submit" value="checked">등록</button>
+          <a href="/" class="btn btn-danger text-white mb-4">돌아가기</a href="/">
+        </form>
+        <p class="notify"></p>
+        <p class="text-white">*등록된 개인정보는 안전하게 보관되며, 주말 상관없이 매일 7시 30부터 50분 사이 무작위한 시간에 자동으로 자가진단을 해드립니다</p>
+        <div class="alert alert-danger hover-shadow" role="alert">
+          <ul class="m-0">
+            <li>이 서비스는 건강상의 문제를 고려하지 않고 귀찮은 자가진단을 자동으로 할 수 있게 하는 목적으로 개발되었습니다.</li>
+            <li>만약 이 서비스를 등록하였으나 건강상의 문제가 발생한다면 7시 40분 이후 자가진단을 직접 실시하여 기존 진단을 덮어 씌우시면 됩니다.</li>
+            <li>이 서비스를 등록함으로서 발생하는 피해는 서비스를 등록한 본인에게 책임이 있습니다.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-2 text-center text-white">
+      <button type="button" class=" btn btn-nord btn-sm text-white mr-1" data-toggle="modal" data-target="#credit">
+        Credits
+      </button>
+      Hosted with <span style="color: #e25555;">&hearts;</span> by <a class="hover-shadow" href="https://trinets.xyz" style="color: #6bedd4">Tritium Networks</a>.
+    </div>
+
+    <div
+      class="modal fade"
+      id="credit"
+      tabindex="-1"
+      aria-labelledby="creditLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header text-white bg-dark">
+            <h5 class="modal-title" id="creditLabel">만든이들 & 도움준 사람들</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body bg-dark text-white text-center">
+            백엔드 및 UI디자인 (2차)<br />
+            PMH, Park Min Hyeok (<a href="https://github.com/pmh-only" class="fg-nord">Github</a>/<a href="mailto:pmhstudio.pmh@gmail.com" class="fg-nord">Email</a>)<br /><br />
+
+            API 및 통신 분석 (원작자)<br />
+            comjun04<br /><br />
+
+            보조 프로그래밍 및 테스터<br />
+            Noeul<br /><br />
+
+            투덜투덜 및 테스터<br />
+            Teaddy<br /><br />
+
+            and 트리튬섭 멤버들 (<a href="https://discord.gg/VbcGYnv" class="fg-nord">Discord</a>)
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/src/js/main.js"></script>
+  </body>
+</html>

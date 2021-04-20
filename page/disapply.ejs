@@ -20,22 +20,32 @@
         <h5>한번 등록으로 매일 자동 자가진단</h5>
       </div>
 
-      <div class="container mt-5 p-3">
-        <h2 class="text-center text-white mb-5">사용하실 메뉴를 선택해 주세요</h2>
-        <div class="row">
-          <div class="col-sm d-inline p-2">
-            <a href="/apply" class="w-100 btn btn-nord text-center text-white p-5">
-              <h3>가입</h3>
-              <p>자동 자가진단 서비스를 가입합니다.</p>
-            </a>
+      <div class="container mt-5 p-5">
+        <form method="POST" action="/api/disapply">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-outline mb-4">
+                <input required type="text" name="studentName" id="studentName" class="form-control text-white" />
+                <label class="form-label text-white" for="studentName">학생명</label>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-outline mb-4">
+                <input required type="number" min=10101 name="birth" id="birth" class="form-control text-white" />
+                <label class="form-label text-white" for="birth">생년월일 (6자)</label>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="form-outline mb-4">
+                <input required type="tel" name="password" maxlength="4" id="password" class="form-control text-white" />
+                <label class="form-label text-white" for="password">비밀번호 (4자)</label>
+              </div>
+            </div>
           </div>
-          <div class="col-sm d-inline p-2">
-            <a href="/disapply" class="w-100 btn btn-nord text-center text-white p-5">
-              <h3>탈퇴 <span class="badge badge-danger bg-danger">new</span></h3>
-              <p>자동 자가진단 서비스를 탈퇴합니다</p>
-            </a>
-          </div>
-        </div>
+          <button class="btn btn-nord text-white mb-4 mr-2" type="submit" value="checked">탈퇴</button>
+          <a href="/" class="btn btn-danger text-white mb-4">돌아가기</a>
+          <p class="text-white">비밀번호를 분실하신 경우 <a href="mailto:pmhstudio.pmh@gmail.com">여기</a>로 이메일을 보내주시면 확인후 탈퇴해 드립니다.</p>
+        </form>
       </div>
     </div>
 
@@ -81,5 +91,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/1.0.0/mdb.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/src/js/disapply.js"></script>
   </body>
 </html>

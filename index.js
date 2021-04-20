@@ -15,6 +15,8 @@ const app = express()
 const srv = http.createServer(app)
 const socket = socketio(srv)
 
+let schedules = []
+
 // --- db
 
 const db = knex({
@@ -38,7 +40,9 @@ socket.on('connection', (session) => {
 
 // --- http
 
-app.get('/', async (_, res) => res.send(await render(path + '/page/index.ejs', { constant })))
+app.get('/', async (_, res) => res.send(await render(path + '/page/index.ejs')))
+app.get('/apply', async (_, res) => res.send(await render(path + '/page/apply.ejs', { constant })))
+app.get('/disapply', async (_, res) => res.send(await render(path + '/page/disapply.ejs')))
 
 app.use('/api', express.urlencoded({ extended: true }))
 app.post('/api', async (req, res) => {
@@ -53,7 +57,20 @@ app.post('/api', async (req, res) => {
   try { await db.insert(rendered).into('userdata') } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }
   res.send('<script>alert("등록 완료! 내일을 기대하세요 :)");window.location.replace("/")</script>')
 
-  schedule.scheduleJob('30 7 * * *', hcheck(rendered))
+  schedules.push(schedule.scheduleJob('30 7 * * *', hcheck(rendered)))
+})
+
+app.post('/api/disapply', async (req, res) => {
+  const { studentName: name, birth, password } = req.body
+
+  const [user] = await db.select('*').where({ name, birth, password }).from('userdata')
+  if (!user) return res.send('<script>alert("해당 사용자를 찾을 수 없습니다.");window.location.replace("/")</script>')
+
+  await db.delete().where({ name, birth, password }).from('userdata')
+  res.send('<script>alert("성공적으로 탈퇴처리 되었습니다.\\n이에 따라 제공하신 개인정보가 성공적으로 파기되었습니다.");window.location.replace("/")</script>')
+
+  schedules.forEach((sch) => sch.cancel())
+  loadhc()
 })
 
 app.use('/', express.static(path + '/public'))
@@ -65,9 +82,10 @@ srv.listen(PORT, () => console.log('Server at port:', PORT))
 
 loadhc()
 async function loadhc () {
+  schedules = []
   const datas = await db.select('*').from('userdata')
   datas.forEach((data) => {
-    schedule.scheduleJob('30 7 * * *', hcheck(data))
+    schedules.push(schedule.scheduleJob('30 7 * * *', hcheck(data)))
   })
 }
 

@@ -25,7 +25,7 @@ document.forms[0].elements[2].addEventListener('input', () => {
 
 socket.on('checkschool', (err, search) => {
   if (!err) {
-    document.getElementsByClassName('notify')[0].innerHTML = '검색 성공: ' + search.schoolName + ' ' + search.schoolAddr
+    document.getElementsByClassName('notify')[0].innerHTML = '검색 성공: ' + search.schoolName + ' ' + search.schoolAddr + (search.length > 1 ? ` (+${search.length})` : '')
     document.getElementsByClassName('notify')[0].style.color = '#a3be8c'
     document.forms[0].elements[2].style.color = '#a3be8c'
   } else {

@@ -33,7 +33,7 @@ const db = knex({
 socket.on('connection', (session) => {
   session.on('checkschool', async (args) => {
     let data, search
-    try { search = await getSchoolData({ region: args[0], level: args[1], name: args[2] }) } catch (err) { data = err.message }
+    try { search = await getSchoolData({ region: args[0], level: args[1], name: args[2].split('$')[0] }, args[2].split('$')[1]) } catch (err) { data = err.message }
     session.emit('checkschool', data, search)
   })
 })
@@ -51,7 +51,7 @@ app.post('/api', async (req, res) => {
   let data
   try { data = await getSchoolData({ region, level, name }) } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }
 
-  const { schoolCode: school, requestUrl: url } = data
+  const { orgCode: school, atptOfcdcConctUrl: url } = data
   const rendered = { school, url, name: sname, birth, password }
 
   try { await db.insert(rendered).into('userdata') } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }

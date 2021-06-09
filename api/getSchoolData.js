@@ -2,7 +2,7 @@ const { URLSearchParams } = require('url')
 
 const { constant, fetch } = require('../utils')
 
-module.exports = async (school) => {
+module.exports = async (school, id) => {
   const regionCode = constant.regions[school.region]
   const schoolLevelCode = constant.schoolLevels[school.level]
   if (!regionCode) throw new Error('올바르지 않은 지역 이름이 입력되었어요! 다시 확인해주세요!')
@@ -19,7 +19,7 @@ module.exports = async (school) => {
     .then(res => res.json())
     .then(json => {
       if (!Array.isArray(json.schulList) || json.schulList.length < 1) throw new Error('검색된 학교가 하나도 없어요! 학교 이름을 정확하게 입력해주세요!')
-      else { return { schoolCode: json.schulList[0].orgCode, requestUrl: json.schulList[0].atptOfcdcConctUrl, schoolName: json.schulList[0].kraOrgNm, schoolAddr: json.schulList[0].addres, length: json.schulList.length } }
+      else return id ? json.schulList.filter((sc) => sc.orgCode === id) : json.schulList
     })
 
   return result

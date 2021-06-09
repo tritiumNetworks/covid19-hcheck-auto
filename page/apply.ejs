@@ -40,10 +40,11 @@
               </select>
             </div>
             <div class="col-md-5">
-              <div class="form-outline mb-4">
+              <div class="form-outline mb-4 d-inline-block">
                 <input disabled type="text" name="name" id="name" class="form-control text-little-white" />
                 <label class="form-label text-white" for="name">학교명</label>
               </div>
+              <button id="selschool" class="btn btn-nord text-white mb-4 d-none" data-toggle="modal" data-target="#selschoolmodal">학교선택</button>
             </div>
           </div>
           <div class="row">
@@ -66,15 +67,15 @@
               </div>
             </div>
           </div>
-          <button class="btn btn-nord text-white mb-4 mr-2" type="submit" value="checked">등록</button>
-          <a href="/" class="btn btn-danger text-white mb-4">돌아가기</a href="/">
+          <button class="btn btn-primary text-white mb-4 mr-2" type="submit" value="checked">등록</button>
+          <a href="/" class="btn btn-nord text-white mb-4">돌아가기</a href="/">
         </form>
         <p class="notify"></p>
         <p class="text-white">*등록된 개인정보는 안전하게 보관되며, 주말 상관없이 매일 7시 30부터 50분 사이 무작위한 시간에 자동으로 자가진단을 해드립니다</p>
         <div class="alert alert-danger hover-shadow" role="alert">
           <ul class="m-0">
             <li>이 서비스는 건강상의 문제를 고려하지 않고 귀찮은 자가진단을 자동으로 할 수 있게 하는 목적으로 개발되었습니다.</li>
-            <li>만약 이 서비스를 등록하였으나 건강상의 문제가 발생한다면 7시 40분 이후 자가진단을 직접 실시하여 기존 진단을 덮어 씌우시면 됩니다.</li>
+            <li>만약 이 서비스를 등록하였으나 건강상의 문제가 발생한다면 7시 50분 이후 자가진단을 직접 실시하여 기존 진단을 덮어 씌우시면 됩니다.</li>
             <li>이 서비스를 등록함으로서 발생하는 피해는 서비스를 등록한 본인에게 책임이 있습니다.</li>
           </ul>
         </div>
@@ -82,41 +83,21 @@
     </div>
 
     <div class="mt-2 text-center text-white">
-      <button type="button" class=" btn btn-nord btn-sm text-white mr-1" data-toggle="modal" data-target="#credit">
-        Credits
-      </button>
-      Hosted with <span style="color: #e25555;">&hearts;</span> by <a class="hover-shadow" href="https://trinets.xyz" style="color: #6bedd4">Tritium Networks</a>.
+      제작: 2020. (칠곡)장곡중, 경북소프트웨어고. 박민혁 (문의: <a href="mailto:pmhstudio.pmh@gmail.com" class="text-danger text-decoration-underline">pmhstudio.pmh@gmail.com</a>)
     </div>
 
-    <div
-      class="modal fade"
-      id="credit"
-      tabindex="-1"
-      aria-labelledby="creditLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
+    <!-- Modal -->
+    <div class="modal fade" id="selschoolmodal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <div class="modal-header text-white bg-dark">
-            <h5 class="modal-title" id="creditLabel">만든이들 & 도움준 사람들</h5>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">학교 선택</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body bg-dark text-white text-center">
-            백엔드 및 UI디자인 (2차)<br />
-            PMH, Park Min Hyeok (<a href="https://github.com/pmh-only" class="fg-nord">Github</a>/<a href="mailto:pmhstudio.pmh@gmail.com" class="fg-nord">Email</a>)<br /><br />
-
-            API 및 통신 분석 (원작자)<br />
-            comjun04<br /><br />
-
-            보조 프로그래밍 및 테스터<br />
-            Noeul<br /><br />
-
-            투덜투덜 및 테스터<br />
-            Teaddy<br /><br />
-
-            and 트리튬섭 멤버들 (<a href="https://discord.gg/VbcGYnv" class="fg-nord">Discord</a>)
+          <div class="modal-body">
+            <table id="schoolstable"></table>
           </div>
         </div>
       </div>

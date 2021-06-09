@@ -15,25 +15,56 @@ document.forms[0].addEventListener('input', () => {
   document.forms[0].elements[2].disabled = !hasvalue
 })
 
-document.forms[0].elements[2].addEventListener('input', () => {
+document.forms[0].elements[2].addEventListener('input', query)
+
+function query () {
   const values = []
   Array.prototype.slice.call(document.forms[0].elements).slice(0, 3).forEach((e) => values.push(e.value))
   setTimeout(() => {
     if (values[2] === document.forms[0].elements[2].value) socket.emit('checkschool', values)
   }, 500)
-})
+}
 
 socket.on('checkschool', (err, search) => {
   if (!err) {
-    document.getElementsByClassName('notify')[0].innerHTML = '검색 성공: ' + search.schoolName + ' ' + search.schoolAddr + (search.length > 1 ? ` (+${search.length})` : '')
-    document.getElementsByClassName('notify')[0].style.color = '#a3be8c'
-    document.forms[0].elements[2].style.color = '#a3be8c'
+    if (search.length > 1) {
+      document.getElementsByClassName('notify')[0].innerHTML = '검색결과가 많습니다. 해당하는 학교명을 선택해주세요'
+      document.getElementsByClassName('notify')[0].style.color = 'skyblue'
+      document.getElementById('selschool').classList.remove('d-none')
+      document.forms[0].elements[2].style.color = '#a3be8c'
+      document.forms[0].elements[4].disabled = true
+      document.forms[0].elements[5].disabled = true
+      document.forms[0].elements[6].disabled = true
+
+      /**
+       * @type {HTMLTableElement}
+       */
+      const table = document.getElementById('schoolstable')
+      while (table.rows.length > 0) table.deleteRow(0)
+      for (const school of search) {
+        const row = table.insertRow()
+        const namecell = row.insertCell()
+        const selectcell = row.insertCell()
+
+        namecell.innerHTML = `<h4>${school.kraOrgNm}</h4><p>${school.addres}</p>`
+        selectcell.innerHTML = `<button onclick="document.forms[0].elements[2].value='${school.kraOrgNm}$${school.orgCode}';query()" class="btn btn-primary" data-dismiss="modal">선택</button>`
+      }
+    } else {
+      document.getElementById('selschool').classList.add('d-none')
+      document.getElementsByClassName('notify')[0].innerHTML = '검색 성공: ' + search[0].kraOrgNm + ' ' + search[0].addres
+      document.getElementsByClassName('notify')[0].style.color = '#a3be8c'
+      document.forms[0].elements[2].style.color = '#a3be8c'
+      document.forms[0].elements[4].disabled = false
+      document.forms[0].elements[5].disabled = false
+      document.forms[0].elements[6].disabled = false
+    }
   } else {
+    document.getElementById('selschool').classList.add('d-none')
     document.getElementsByClassName('notify')[0].innerHTML = '검색 실패: ' + err
     document.getElementsByClassName('notify')[0].style.color = '#bf616a'
     document.forms[0].elements[2].style.color = '#bf616a'
+    document.forms[0].elements[4].disabled = true
+    document.forms[0].elements[5].disabled = true
+    document.forms[0].elements[6].disabled = true
   }
-  document.forms[0].elements[3].disabled = !!err
-  document.forms[0].elements[4].disabled = !!err
-  document.forms[0].elements[5].disabled = !!err
 })

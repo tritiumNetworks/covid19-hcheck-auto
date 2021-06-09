@@ -4,7 +4,7 @@ const socket = io()
 // eslint-disable-next-line no-unused-vars
 function check () {
   let hasvalue = true
-  document.forms[0].elements.forEach((e) => { if (!e.value) hasvalue = false })
+  document.forms[0].elements.forEach((e, i) => { if (i !== 3 && !e.value) hasvalue = false })
   if (!hasvalue) return false
   return confirm('이 서비스의 이용자는 만 14세 이상이며\n이 서비스를 사용함에 있어 생기는 방역적 문제는 사용자가 전적 책임지는데 동의 하십니까?')
 }

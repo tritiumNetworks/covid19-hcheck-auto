@@ -49,7 +49,7 @@ app.post('/api', async (req, res) => {
   const { region, level, name, studentName: sname, birth, password } = req.body
 
   let data
-  try { data = await getSchoolData({ region, level, name }) } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }
+  try { [data] = await getSchoolData({ region, level, name }) } catch (err) { return res.send('<script>alert("어.. 이게 아닌데..\\n' + err.message + '");window.location.replace("/")</script>') }
 
   const { orgCode: school, atptOfcdcConctUrl: url } = data
   const rendered = { school, url, name: sname, birth, password }
